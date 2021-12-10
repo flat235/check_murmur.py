@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 import sys
 import dbus
 
@@ -14,30 +14,30 @@ reportstr = ""
 warningstr = ""
 
 if(len(sys.argv) == 1 or sys.argv[1] == '-h' or sys.argv[1] == '--help'):
-  print 'usage: ' + sys.argv[0] + ' <server number> <minusers> <maxusers> <minchannels> <maxchannels> <minbans> <maxbans>'
-	print 'minimus: <= 0: disabled (except maxbans, only disabled for <= -1); maximums: <= 0 disabled; server numbers start with 1!'
+	print('usage: ' + sys.argv[0] + ' <server number> <minusers> <maxusers> <minchannels> <maxchannels> <minbans> <maxbans>')
+	print('minimus: <= 0: disabled (except maxbans, only disabled for <= -1); maximums: <= 0 disabled; server numbers start with 1!')
 	sys.exit()
 
 servernum = sys.argv[1]
 if(int(sys.argv[2]) > 0):
 	minusers = int(sys.argv[2])
 if(int(sys.argv[3]) > 0):
-        maxusers = int(sys.argv[3])
+	maxusers = int(sys.argv[3])
 if(int(sys.argv[4]) > 0):
-        minchannels = int(sys.argv[4])
+	minchannels = int(sys.argv[4])
 if(int(sys.argv[5]) > 0):
-        maxchannels = int(sys.argv[5])
+	maxchannels = int(sys.argv[5])
 if(int(sys.argv[6]) > 0):
-        minbans = int(sys.argv[6])
+	minbans = int(sys.argv[6])
 if(int(sys.argv[7]) > -1):
-        maxbans = int(sys.argv[7])
+	maxbans = int(sys.argv[7])
 
 bus = dbus.SystemBus()
 server = bus.get_object('net.sourceforge.mumble.murmur', '/'+str(servernum))
 try:
 	players = server.getPlayers()
 except dbus.exceptions.DBusException:
-	print "Critical: No connection via dbus. If dbus is up this service is probably down."
+	print("Critical: No connection via dbus. If dbus is up this service is probably down.")
 	sys.exit(2) #Crit
 channels = server.getChannels()
 bans = server.getBans()
@@ -73,7 +73,7 @@ if(warning):
 	reportstr = "WARNING: " + reportstr + ", warnings:" + warningstr
 else:
 	reportstr = "OK: " + reportstr
-print reportstr
+print(reportstr)
 if(warning):
 	sys.exit(1)
 else:
